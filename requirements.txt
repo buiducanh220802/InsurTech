@@ -1,0 +1,6 @@
+streamlit>=1.36
+xgboost>=2.0        # cài cùng phiên bản với notebook train (xem meta.json -> xgboost_version)
+pandas
+numpy
+matplotlib
+# shap          # tùy chọn: chỉ cần nếu muốn tự vẽ beeswarm; app không cần shap để chạy
