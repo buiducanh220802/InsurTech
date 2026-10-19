@@ -11,7 +11,13 @@ import numpy as np
 import pandas as pd
 from .features import default_groups, DEFAULT_FEATURES
 
-TOL = 0.05   # sai số cho phép khi kiểm tra tính cộng của SHAP (đơn vị claim)
+TOL = 0.05       # sai số tuyệt đối cho phép khi kiểm tra tính cộng của SHAP (đơn vị claim)
+TOL_REL = 2e-6   # cộng thêm sai số tương đối: float32 của XGBoost lệch cỡ 1e-6 * giá trị
+
+
+def within_tol(gap, pred):
+    """gap, pred: số hoặc mảng. True nếu |gap| <= TOL + TOL_REL * |pred|."""
+    return np.all(np.abs(gap) <= TOL + TOL_REL * np.abs(pred))
 
 
 @dataclass
@@ -23,7 +29,7 @@ class Explanation:
 
     def check(self):
         gap = abs(self.base_value + float(self.contribs.sum()) - self.prediction)
-        assert gap < TOL, f"SHAP không cộng đủ: lệch {gap:.4f}"
+        assert within_tol(gap, self.prediction), f"SHAP không cộng đủ: lệch {gap:.4f}"
 
 
 class BaseAdapter:
@@ -46,7 +52,7 @@ def contrib_matrix(booster, X: pd.DataFrame) -> np.ndarray:
 
 
 class XGBAdapter(BaseAdapter):
-    name = "XGBoost + SHAP"
+    name = "XGBoosting"
 
     def __init__(self, directory: str):
         import xgboost as xgb
@@ -110,7 +116,7 @@ class MoEAdapter(BaseAdapter):
         expert_profiles: dict[str, str]  (tùy chọn)    mô tả nghiệp vụ của từng nhóm
         meta: dict (tùy chọn)                          test_metrics, best_params, ...
     """
-    name = "MoE (nhiều chuyên gia)"
+    name = "MoE"
 
     def __init__(self, moe, label: str | None = None):
         self.moe = moe
@@ -140,7 +146,8 @@ class MoEAdapter(BaseAdapter):
         d = getattr(self.moe, "artifacts_dir", None)
         out = {}
         if d:
-            for k, fn in {"summary": "shap_summary.png", "bar": "shap_bar.png", "groups": "shap_groups.png"}.items():
+            for k, fn in {"summary": "shap_summary.png", "bar": "shap_bar.png", "groups": "shap_groups.png",
+                          "experts": "shap_experts.png"}.items():
                 p = os.path.join(d, fn)
                 if os.path.exists(p): out[k] = p
         return out
@@ -180,9 +187,9 @@ def load_models(artifacts_dir: str):
             a = MoEAdapter(_load_moe_from_dir(mdir)); models[a.name] = a
         except Exception as ex:
             notes.append(f"Không nạp được MoE: {ex!r}")
-    elif os.environ.get("DEMO_MOCK_MOE") == "1" and "XGBoost + SHAP" in models:
+    elif os.environ.get("DEMO_MOCK_MOE") == "1" and "XGBoosting" in models:
         from .mock_moe import MockMoE
-        a = MoEAdapter(MockMoE(models["XGBoost + SHAP"]), label="MoE (MOCK — chỉ để thử giao diện)")
+        a = MoEAdapter(MockMoE(models["XGBoosting"]), label="MoE (MOCK — chỉ để thử giao diện)")
         models[a.name] = a
         notes.append("Đang dùng MoE GIẢ LẬP (DEMO_MOCK_MOE=1). Kết quả không phải của mô hình MoE thật.")
     else:

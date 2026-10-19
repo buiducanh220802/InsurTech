@@ -1,0 +1,112 @@
+{
+  "feature_names": [
+    "age",
+    "sex",
+    "weight",
+    "bmi",
+    "no_of_dependents",
+    "smoker",
+    "bloodpressure",
+    "diabetes",
+    "regular_ex",
+    "Age_x_Smoker",
+    "Age_x_Diabetic",
+    "BMI_x_Smoker",
+    "BP_per_Age",
+    "Dependents_x_Smoker",
+    "is_smoker_obese",
+    "is_smoker_senior",
+    "hereditary_diseases_Arthritis",
+    "hereditary_diseases_Cancer",
+    "hereditary_diseases_Diabetes",
+    "hereditary_diseases_Epilepsy",
+    "hereditary_diseases_EyeDisease",
+    "hereditary_diseases_HeartDisease",
+    "hereditary_diseases_High BP",
+    "hereditary_diseases_NoDisease",
+    "hereditary_diseases_Obesity",
+    "job_title_Architect",
+    "job_title_Dancer",
+    "job_title_Engineer",
+    "job_title_FilmMaker",
+    "job_title_HomeMakers",
+    "job_title_HouseKeeper",
+    "job_title_Other",
+    "job_title_Photographer",
+    "job_title_Singer",
+    "job_title_Student"
+  ],
+  "expert_names": [
+    "Expert 0",
+    "Expert 1"
+  ],
+  "n_experts": 2,
+  "target": "claim",
+  "target_unit": "USD",
+  "target_mode": "raw",
+  "test_metrics": {
+    "mae": {
+      "value": 4531.151462827464,
+      "ci_low": 4321.952797094241,
+      "ci_high": 4760.095926117702
+    },
+    "rmse": {
+      "value": 6660.725350980386,
+      "ci_low": 6316.247655903512,
+      "ci_high": 7023.3597779648735
+    },
+    "r2": {
+      "value": 0.6900740969226281,
+      "ci_low": 0.650727059039204,
+      "ci_high": 0.7239748602919719
+    },
+    "wape": {
+      "value": 0.2843941872514297,
+      "ci_low": 0.27060098007765404,
+      "ci_high": 0.29885766297184047
+    }
+  },
+  "expert_profiles": {
+    "Expert 0": {
+      "n_samples": 4061,
+      "share": 0.5050995024875622,
+      "mean_claim": 8876.212583107608
+    },
+    "Expert 1": {
+      "n_samples": 3979,
+      "share": 0.4949004975124378,
+      "mean_claim": 23209.049509927117
+    }
+  },
+  "expert_params": {
+    "n_estimators": 500,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.05,
+    "reg_lambda": 1.0,
+    "tree_method": "hist",
+    "n_jobs": -1
+  },
+  "gate_params": {
+    "n_estimators": 200,
+    "max_depth": 5,
+    "learning_rate": 0.03,
+    "subsample": 0.8,
+    "tree_method": "hist",
+    "n_jobs": -1
+  },
+  "max_iter": 20,
+  "sigma2": [
+    664527.7815411828,
+    29998349.480026238
+  ],
+  "xgboost_version": "3.4.1",
+  "protocol": {
+    "fit_on_train_then_test_once": true,
+    "random_state": 42,
+    "postprocess": "none",
+    "missing_values": "native"
+  }
+}

@@ -83,8 +83,8 @@ inp = dict(age=None if ss["age_unknown"] else ss["age"], sex=1 if ss["sex"] == "
 X1 = build_row(inp, DEFAULT_FEATURES)
 
 # ------------------------------------------------------------------ nội dung chính
-st.title("Dự đoán chi phí bảo hiểm y tế")
-st.caption("Bản demo nội bộ. Mô hình huấn luyện trên bộ dữ liệu bảo hiểm để minh họa phương pháp, không dùng để định phí thực tế.")
+st.title("Dự đoán chi phí bảo hiểm y tế và giải thích")
+st.caption("Bản demo nội bộ. Mô hình huấn luyện trên bộ dữ liệu bảo hiểm 10.050 hồ sơ để minh họa phương pháp.")
 for n in notes:
     (st.warning if "MOCK" in n or "GIẢ LẬP" in n else st.info)(n)
 if not models:
@@ -118,14 +118,16 @@ with tab1:
                     g = e.extras["gating"].sort_values(ascending=False)
                     st.markdown(f"**Nhóm chuyên gia chính:** {g.index[0]} ({g.iloc[0]:.0%})")
                     prof = e.extras.get("expert_profiles", {}).get(g.index[0])
-                    if prof: st.caption(prof)
+                    if isinstance(prof, dict):
+                        prof = ", ".join(f"{k}: {v:,.2f}" if isinstance(v, float) else f"{k}: {v}" for k, v in prof.items())
+                    if prof: st.caption(str(prof))
                     st.bar_chart(g)
                 bill = make_bill(e, X1, m.groups, grouped=grouped, top_n=top_n)
                 fig = waterfall(bill, UNIT); st.pyplot(fig); plt.close(fig)
                 disp = bill.copy()
                 disp[f"Ảnh hưởng ({UNIT})"] = [f"{v:,.0f}" if i in (0, len(bill) - 1) else f"{v:+,.0f}" for i, v in enumerate(bill["Ảnh hưởng"])]
                 st.dataframe(disp.drop(columns="Ảnh hưởng"), hide_index=True)
-                st.caption("Mức nền + các khoản = tổng dự đoán (đã kiểm tra cộng đủ). Đỏ: làm tăng chi phí, xanh: làm giảm chi phí.")
+                st.caption("Mức nền + các khoản = tổng dự đoán (đã kiểm tra cộng đủ). Đỏ: làm tăng chi phí, xanh: làm giảm.")
         if len(preds) == 2:
             a, b = list(preds)
             st.info(f"Chênh lệch giữa hai mô hình: {preds[a] - preds[b]:+,.0f} {UNIT}")
@@ -146,6 +148,7 @@ with tab2:
         if "summary" in files: a.image(files["summary"], caption="SHAP beeswarm (mỗi chấm là một hồ sơ)")
         if "bar" in files: b.image(files["bar"], caption="Mức quan trọng trung bình")
         if "groups" in files: st.image(files["groups"], caption="Ảnh hưởng theo nhóm đặc trưng")
+        if "experts" in files: st.image(files["experts"], caption="Mỗi expert dựa vào đặc trưng nào (trước khi trộn theo gate)")
         if tbl is not None: st.dataframe(tbl.head(20), hide_index=True)
     if not shown:
         st.info("Chưa có ảnh SHAP toàn cục. Chạy notebook train và giải nén đầy đủ xgb_artifacts.zip.")

@@ -12,7 +12,7 @@ import pandas as pd
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 from core.features import DEFAULT_FEATURES, PRESETS, HEREDITARY, JOBS, build_row
-from core.adapters import TOL, MoEAdapter, XGBAdapter, _load_moe_from_dir, contrib_matrix
+from core.adapters import TOL, TOL_REL, within_tol, MoEAdapter, XGBAdapter, _load_moe_from_dir, contrib_matrix
 
 RES = []
 
@@ -96,9 +96,10 @@ def validate_moe(directory):
 
     f_k = c.sum(axis=2)                      # (K, n): dự đoán của từng expert = bias + tổng SHAP
     gap = np.abs(pred - (g * f_k.T).sum(axis=1))
-    rec("PASS" if gap.max() < TOL else "FAIL", "predict = Σ_k g_k · f_k (điều kiện để SHAP gộp đúng)",
-        f"lệch lớn nhất {gap.max():.4g} (cho phép {TOL}); tại hồ sơ số {int(gap.argmax())}")
-    if gap.max() >= TOL:
+    ok_sum = within_tol(gap, pred)
+    rec("PASS" if ok_sum else "FAIL", "predict = Σ_k g_k · f_k (điều kiện để SHAP gộp đúng)",
+        f"lệch lớn nhất {gap.max():.4g} (cho phép {TOL} + {TOL_REL}·|dự đoán|); tại hồ sơ số {int(gap.argmax())}")
+    if not ok_sum:
         rec("INFO", "Gợi ý", "kiểm tra: predict có clip/làm mượt/chuẩn hóa lại gating không? gating dùng để dự đoán có trùng gating_proba không (hard vs soft)? "
                              "expert có objective log-link không? hồ sơ lệch nhất ở trên là nơi nên debug trước")
 
@@ -138,8 +139,9 @@ def validate_xgb(directory):
     X = make_test_rows(); pred = ad.predict(X); unit_check(pred)
     C = contrib_matrix(ad.booster, X)
     gap = np.abs(C.sum(axis=1) - pred)
-    rec("PASS" if gap.max() < TOL else "FAIL", "Base + Σ SHAP = dự đoán", f"lệch lớn nhất {gap.max():.4g}"
-        + ("" if gap.max() < TOL else "; objective phải là reg:squarederror (không dùng log-link/tweedie/gamma)"))
+    ok_x = within_tol(gap, pred)
+    rec("PASS" if ok_x else "FAIL", "Base + Σ SHAP = dự đoán", f"lệch lớn nhất {gap.max():.4g}"
+        + ("" if ok_x else "; objective phải là reg:squarederror (không dùng log-link/tweedie/gamma)"))
     for p in PRESETS.values(): ad.explain(build_row(p))
     rec("PASS", "XGBAdapter.explain trên hồ sơ mẫu")
     check_test_metrics(ad.meta)
