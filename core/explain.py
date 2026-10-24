@@ -26,7 +26,9 @@ def make_bill(expl, x_row: pd.DataFrame, groups: dict, grouped: bool = True, top
     if rest: rows.append((REST_LABEL, f"{len(rest)} mục nhỏ", float(sum(t[2] for t in rest))))
     rows.append((TOTAL_LABEL, "", float(expl.prediction)))
     df = pd.DataFrame(rows, columns=["Khoản mục", "Giá trị nhập", "Ảnh hưởng"])
-    assert abs(df["Ảnh hưởng"].iloc[:-1].sum() - expl.prediction) < 0.05, "Hóa đơn không cộng đủ"
+    from .adapters import within_tol
+    gap = abs(df["Ảnh hưởng"].iloc[:-1].sum() - expl.prediction)
+    assert within_tol(gap, expl.prediction), f"Hóa đơn không cộng đủ (lệch {gap:.4f})"
     return df
 
 
@@ -50,7 +52,9 @@ def waterfall(bill: pd.DataFrame, unit: str = "USD"):
                 va="center", fontsize=8)
     ax.set_yticks(y); ax.set_yticklabels([l if len(l) < 38 else l[:36] + "…" for l in labels], fontsize=8)
     ax.set_xlabel(f"{unit}"); ax.spines[["top", "right"]].set_visible(False)
-    ax.set_xlim(0, max(starts + np.maximum(widths, 0)) * 1.12)
+    lo = min(0.0, float(np.min(np.minimum(starts, starts + widths))))
+    hi = float(np.max(np.maximum(starts, starts + widths)))
+    ax.set_xlim(lo * 1.12, hi * 1.12)
     fig.tight_layout()
     return fig
 

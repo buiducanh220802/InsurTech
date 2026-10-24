@@ -116,7 +116,7 @@ class MoEAdapter(BaseAdapter):
         expert_profiles: dict[str, str]  (tùy chọn)    mô tả nghiệp vụ của từng nhóm
         meta: dict (tùy chọn)                          test_metrics, best_params, ...
     """
-    name = "MoE"
+    name = "Mixture of Experts"
 
     def __init__(self, moe, label: str | None = None):
         self.moe = moe
