@@ -1,0 +1,184 @@
+{
+ "model": "XGBRegressor (objective reg:squarederror, NaN gốc)",
+ "xgboost_version": "3.4.1",
+ "n_rows": 8040,
+ "target_unit": "đơn vị gốc của claim",
+ "feature_names": [
+  "age",
+  "sex",
+  "weight",
+  "bmi",
+  "no_of_dependents",
+  "smoker",
+  "bloodpressure",
+  "diabetes",
+  "regular_ex",
+  "Age_x_Smoker",
+  "Age_x_Diabetic",
+  "BMI_x_Smoker",
+  "BP_per_Age",
+  "Dependents_x_Smoker",
+  "is_smoker_obese",
+  "is_smoker_senior",
+  "hereditary_diseases_Arthritis",
+  "hereditary_diseases_Cancer",
+  "hereditary_diseases_Diabetes",
+  "hereditary_diseases_Epilepsy",
+  "hereditary_diseases_EyeDisease",
+  "hereditary_diseases_HeartDisease",
+  "hereditary_diseases_High BP",
+  "hereditary_diseases_NoDisease",
+  "hereditary_diseases_Obesity",
+  "job_title_Architect",
+  "job_title_Dancer",
+  "job_title_Engineer",
+  "job_title_FilmMaker",
+  "job_title_HomeMakers",
+  "job_title_HouseKeeper",
+  "job_title_Other",
+  "job_title_Photographer",
+  "job_title_Singer",
+  "job_title_Student"
+ ],
+ "feature_groups": {
+  "age": "Tuổi và huyết áp",
+  "sex": "Thể trạng",
+  "weight": "Thể trạng",
+  "bmi": "Thể trạng",
+  "no_of_dependents": "Người phụ thuộc",
+  "smoker": "Hút thuốc (và các cột tương tác)",
+  "bloodpressure": "Tuổi và huyết áp",
+  "diabetes": "Tiểu đường và lối sống",
+  "regular_ex": "Tiểu đường và lối sống",
+  "Age_x_Smoker": "Hút thuốc (và các cột tương tác)",
+  "Age_x_Diabetic": "Tiểu đường và lối sống",
+  "BMI_x_Smoker": "Hút thuốc (và các cột tương tác)",
+  "BP_per_Age": "Tuổi và huyết áp",
+  "Dependents_x_Smoker": "Hút thuốc (và các cột tương tác)",
+  "is_smoker_obese": "Hút thuốc (và các cột tương tác)",
+  "is_smoker_senior": "Hút thuốc (và các cột tương tác)",
+  "hereditary_diseases_Arthritis": "Bệnh di truyền gia đình",
+  "hereditary_diseases_Cancer": "Bệnh di truyền gia đình",
+  "hereditary_diseases_Diabetes": "Bệnh di truyền gia đình",
+  "hereditary_diseases_Epilepsy": "Bệnh di truyền gia đình",
+  "hereditary_diseases_EyeDisease": "Bệnh di truyền gia đình",
+  "hereditary_diseases_HeartDisease": "Bệnh di truyền gia đình",
+  "hereditary_diseases_High BP": "Bệnh di truyền gia đình",
+  "hereditary_diseases_NoDisease": "Bệnh di truyền gia đình",
+  "hereditary_diseases_Obesity": "Bệnh di truyền gia đình",
+  "job_title_Architect": "Nghề nghiệp",
+  "job_title_Dancer": "Nghề nghiệp",
+  "job_title_Engineer": "Nghề nghiệp",
+  "job_title_FilmMaker": "Nghề nghiệp",
+  "job_title_HomeMakers": "Nghề nghiệp",
+  "job_title_HouseKeeper": "Nghề nghiệp",
+  "job_title_Other": "Nghề nghiệp",
+  "job_title_Photographer": "Nghề nghiệp",
+  "job_title_Singer": "Nghề nghiệp",
+  "job_title_Student": "Nghề nghiệp"
+ },
+ "best_params": {
+  "subsample": 0.8,
+  "reg_lambda": 1,
+  "reg_alpha": 1,
+  "n_estimators": 204,
+  "min_child_weight": 1,
+  "max_depth": 8,
+  "learning_rate": 0.03,
+  "gamma": 0.5,
+  "colsample_bytree": 1.0
+ },
+ "protocol": {
+  "type": "holdout",
+  "split": "train/val 20% seed 42 để tune; fit lại toàn bộ train; chấm trên test",
+  "n_train": 8040,
+  "n_test": 2010,
+  "n_iter": 40,
+  "scoring": "MAE",
+  "ci": "bootstrap 1000 lần, 95%"
+ },
+ "test_metrics": {
+  "mae": {
+   "value": 4340.974662272135,
+   "ci_low": 4150.897427762312,
+   "ci_high": 4550.253191980771
+  },
+  "rmse": {
+   "value": 6494.521058253304,
+   "ci_low": 6148.737678090032,
+   "ci_high": 6858.221556353158
+  },
+  "r2": {
+   "value": 0.7053482115861756,
+   "ci_low": 0.6691887386876946,
+   "ci_high": 0.7388154483648163
+  },
+  "wape": {
+   "value": 0.27245788870309995,
+   "ci_low": 0.258036649895635,
+   "ci_high": 0.2860609455060255
+  }
+ },
+ "test_metrics_xgb_fixed": {
+  "mae": {
+   "value": 4575.490868222061,
+   "ci_low": 4376.605687161156,
+   "ci_high": 4792.1044552452895
+  },
+  "rmse": {
+   "value": 6733.992532462287,
+   "ci_low": 6416.987149628847,
+   "ci_high": 7097.3481453833665
+  },
+  "r2": {
+   "value": 0.6832183010415422,
+   "ci_low": 0.6470866870138902,
+   "ci_high": 0.7169466510824943
+  },
+  "wape": {
+   "value": 0.2871771154461406,
+   "ci_low": 0.27320843431090136,
+   "ci_high": 0.30131468130512246
+  }
+ },
+ "val_metrics": {
+  "mae": 4438.0790418178885,
+  "rmse": 6469.968156385715,
+  "r2": 0.7149584954305441,
+  "wape": 0.2762015082572088
+ },
+ "ranges": {
+  "age": {
+   "min": 18.0,
+   "max": 64.0,
+   "median": 38.0
+  },
+  "weight": {
+   "min": 34.0,
+   "max": 95.0,
+   "median": 64.0
+  },
+  "bmi": {
+   "min": 16.0,
+   "max": 53.1,
+   "median": 28.9
+  },
+  "no_of_dependents": {
+   "min": 0.0,
+   "max": 5.0,
+   "median": 1.0
+  },
+  "bloodpressure": {
+   "min": 40.0,
+   "max": 122.0,
+   "median": 73.0
+  }
+ },
+ "claim": {
+  "mean": 15969.540708955225,
+  "median": 12501.75,
+  "min": 1121.9,
+  "max": 63770.4
+ },
+ "expected_value": 15953.4990234375
+}

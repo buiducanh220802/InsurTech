@@ -1,0 +1,36 @@
+feature,mean_abs_shap,group
+smoker,6800.762,Hút thuốc (và các cột tương tác)
+age,2121.873,Tuổi và huyết áp
+bmi,1599.2758,Thể trạng
+hereditary_diseases_NoDisease,1530.3003,Bệnh di truyền gia đình
+Age_x_Diabetic,1156.9943,Tiểu đường và lối sống
+no_of_dependents,484.79462,Người phụ thuộc
+bloodpressure,423.74823,Tuổi và huyết áp
+weight,405.58795,Thể trạng
+regular_ex,361.1909,Tiểu đường và lối sống
+BP_per_Age,318.72488,Tuổi và huyết áp
+diabetes,281.96762,Tiểu đường và lối sống
+BMI_x_Smoker,236.28545,Hút thuốc (và các cột tương tác)
+Age_x_Smoker,129.19016,Hút thuốc (và các cột tương tác)
+job_title_Other,60.306026,Nghề nghiệp
+job_title_Engineer,52.856205,Nghề nghiệp
+sex,51.95811,Thể trạng
+job_title_HomeMakers,46.036427,Nghề nghiệp
+job_title_Architect,36.146408,Nghề nghiệp
+job_title_Student,27.492113,Nghề nghiệp
+job_title_FilmMaker,26.55702,Nghề nghiệp
+job_title_Singer,24.764946,Nghề nghiệp
+job_title_Photographer,21.567045,Nghề nghiệp
+job_title_Dancer,19.367403,Nghề nghiệp
+hereditary_diseases_Diabetes,18.526758,Bệnh di truyền gia đình
+Dependents_x_Smoker,18.274242,Hút thuốc (và các cột tương tác)
+job_title_HouseKeeper,15.235887,Nghề nghiệp
+hereditary_diseases_Obesity,10.563227,Bệnh di truyền gia đình
+hereditary_diseases_High BP,10.154988,Bệnh di truyền gia đình
+hereditary_diseases_HeartDisease,9.103605,Bệnh di truyền gia đình
+hereditary_diseases_Arthritis,8.381794,Bệnh di truyền gia đình
+hereditary_diseases_EyeDisease,6.19704,Bệnh di truyền gia đình
+hereditary_diseases_Epilepsy,6.0854273,Bệnh di truyền gia đình
+hereditary_diseases_Cancer,2.961663,Bệnh di truyền gia đình
+is_smoker_senior,0.0,Hút thuốc (và các cột tương tác)
+is_smoker_obese,0.0,Hút thuốc (và các cột tương tác)

@@ -1,3 +1,9 @@
+# Python
 __pycache__/
-artifacts/xgb/*
-!artifacts/xgb/.gitkeep
+*.pyc
+
+# Môi trường và IDE
+.venv/
+.idea/
+
+# Artifacts: đẩy lên đầy đủ, không loại trừ gì
